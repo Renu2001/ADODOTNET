@@ -52,6 +52,22 @@ namespace ADOEXAMPLE
 
         }
 
+        public void DeleteData()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("Delete from Contact where FirstName = @FirstName", connection);
+                Console.WriteLine("Enter the Name of contact to be Deleted");
+                string name = Console.ReadLine();
+                cmd.Parameters.AddWithValue("@FirstName", name);
+                connection.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+                Console.WriteLine("Deleted = " + rowsAffected);
+
+            }
+
+        }
+
         static void Main(string[] args)
         {
             Program p = new Program();
@@ -61,6 +77,8 @@ namespace ADOEXAMPLE
                 Console.WriteLine("\nChoose the option ");
                 Console.WriteLine("Type 1 to Add Contact ");
                 Console.WriteLine("Type 2 to Update Contact ");
+                Console.WriteLine("Type 3 to Delete Contact ");
+
 
 
                 Console.WriteLine("Type 0 to Exit ");
@@ -73,6 +91,9 @@ namespace ADOEXAMPLE
                         break;
                     case 2:
                         p.UpdateData();
+                        break;
+                    case 3:
+                        p.DeleteData();
                         break;
 
                     default:
