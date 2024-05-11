@@ -68,6 +68,27 @@ namespace ADOEXAMPLE
 
         }
 
+        public void DisplayData()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("Select * from Contact", connection);
+                connection.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        Console.WriteLine(" FirstName :{0}\n LastName : {1}\n Address: {2}\n City: {3}\n State : {4}\n ZipCode : {5}\n Email : {6}\n PhoneNumber : {7}\n ", rdr["FirstName"], rdr["LastName"], rdr["Address"], rdr["City"], rdr["State"], rdr["ZipCode"], rdr["Email"], rdr["PhoneNumber"]);
+                    }
+                }
+
+
+            }
+
+        }
+
+
         static void Main(string[] args)
         {
             Program p = new Program();
@@ -78,9 +99,7 @@ namespace ADOEXAMPLE
                 Console.WriteLine("Type 1 to Add Contact ");
                 Console.WriteLine("Type 2 to Update Contact ");
                 Console.WriteLine("Type 3 to Delete Contact ");
-
-
-
+                Console.WriteLine("Type 4 to Display Contact ");
                 Console.WriteLine("Type 0 to Exit ");
                 int option = Convert.ToInt32(Console.ReadLine());
 
@@ -94,6 +113,9 @@ namespace ADOEXAMPLE
                         break;
                     case 3:
                         p.DeleteData();
+                        break;
+                    case 4:
+                        p.DisplayData();
                         break;
 
                     default:
