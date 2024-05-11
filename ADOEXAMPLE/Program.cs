@@ -33,6 +33,24 @@ namespace ADOEXAMPLE
 
             }
         }
+        public void UpdateData()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("update Contact set ZipCode = @ZipCode where FirstName = @FirstName", connection);
+                Console.WriteLine("Enter the Name to be chnaged");
+                string name = Console.ReadLine();
+                Console.WriteLine("Enter the Zipcode");
+                int code = Convert.ToInt32(Console.ReadLine());
+                cmd.Parameters.AddWithValue("@FirstName", name);
+                cmd.Parameters.AddWithValue("@ZipCode", code);
+                connection.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+                Console.WriteLine("Updated Rows = " + rowsAffected);
+
+            }
+
+        }
 
         static void Main(string[] args)
         {
@@ -42,7 +60,9 @@ namespace ADOEXAMPLE
             {
                 Console.WriteLine("\nChoose the option ");
                 Console.WriteLine("Type 1 to Add Contact ");
-                
+                Console.WriteLine("Type 2 to Update Contact ");
+
+
                 Console.WriteLine("Type 0 to Exit ");
                 int option = Convert.ToInt32(Console.ReadLine());
 
@@ -51,7 +71,10 @@ namespace ADOEXAMPLE
                     case 1:
                         p.AddData();
                         break;
-                    
+                    case 2:
+                        p.UpdateData();
+                        break;
+
                     default:
                         break;
                 }
