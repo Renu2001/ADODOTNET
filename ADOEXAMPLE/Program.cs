@@ -4,20 +4,19 @@ namespace ADOEXAMPLE
 {
     internal class Program
     {
-        static void Main(string[] args)
+        int rowsAffected;
+        string connectionString = "data source=(localdb)\\MSSQLLocalDB; database=AddressBook; integrated security=SSPI";
+        Contact contact = new Contact();
+        public SqlConnection GetConnect()
         {
-            Contact contact = new Contact
-            {
-                FirstName = "Alice",
-                LastName = "Smith",
-                Address = "456 Elm St",
-                City = "Sometown",
-                State = "CA",
-                ZipCode = 90210,
-                Email = "alicesmith@example.com",
-                PhoneNumber = 1876543211
-            };
-            using (SqlConnection connection = new SqlConnection("data source=(localdb)\\MSSQLLocalDB; database=AddressBook; integrated security=SSPI"))
+            SqlConnection connection = new SqlConnection(connectionString);
+            return connection;
+        }
+        public void AddData()
+        {
+            SqlConnection connection = null;
+            contact.GetUserInfo();
+            using (connection = GetConnect())
             {
                 SqlCommand cmd = new SqlCommand("insert into Contact VALUES (@FirstName, @LastName, @Address, @City, @State, @ZipCode, @Email, @PhoneNumber)", connection);
                 cmd.Parameters.AddWithValue("@FirstName", contact.FirstName);
@@ -29,12 +28,42 @@ namespace ADOEXAMPLE
                 cmd.Parameters.AddWithValue("@Email", contact.Email);
                 cmd.Parameters.AddWithValue("@PhoneNumber", contact.PhoneNumber);
                 connection.Open();
-                int rowsAffected = cmd.ExecuteNonQuery();
+                rowsAffected = cmd.ExecuteNonQuery();
                 Console.WriteLine("Inserted Rows = " + rowsAffected);
-               
 
             }
+        }
+
+        static void Main(string[] args)
+        {
+            Program p = new Program();
+
+            while (true)
+            {
+                Console.WriteLine("\nChoose the option ");
+                Console.WriteLine("Type 1 to Add Contact ");
+                
+                Console.WriteLine("Type 0 to Exit ");
+                int option = Convert.ToInt32(Console.ReadLine());
+
+                switch (option)
+                {
+                    case 1:
+                        p.AddData();
+                        break;
+                    
+                    default:
+                        break;
+                }
+                if (option == 0)
+                    break;
+
+            }
+
+
+
 
         }
     }
 }
+
