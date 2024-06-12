@@ -14,7 +14,7 @@ namespace ADOEXAMPLE
         }
         public void AddData()
         {
-            SqlConnection connection = null;
+            SqlConnection? connection = null;
             contact.GetUserInfo();
             using (connection = GetConnect())
             {
@@ -39,7 +39,7 @@ namespace ADOEXAMPLE
             {
                 SqlCommand cmd = new SqlCommand("update Contact set ZipCode = @ZipCode where FirstName = @FirstName", connection);
                 Console.WriteLine("Enter the Name to be chnaged");
-                string name = Console.ReadLine();
+                string? name = Console.ReadLine();
                 Console.WriteLine("Enter the Zipcode");
                 int code = Convert.ToInt32(Console.ReadLine());
                 cmd.Parameters.AddWithValue("@FirstName", name);
@@ -58,12 +58,11 @@ namespace ADOEXAMPLE
             {
                 SqlCommand cmd = new SqlCommand("Delete from Contact where FirstName = @FirstName", connection);
                 Console.WriteLine("Enter the Name of contact to be Deleted");
-                string name = Console.ReadLine();
+                string? name = Console.ReadLine();
                 cmd.Parameters.AddWithValue("@FirstName", name);
                 connection.Open();
                 rowsAffected = cmd.ExecuteNonQuery();
                 Console.WriteLine("Deleted = " + rowsAffected);
-
             }
 
         }
